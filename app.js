@@ -1,8 +1,9 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import { gradeRouter } from "./routes/gradeRouter.js";
 
-import { db } from './models/index.js';
+import { db } from "./models/index.js";
 
 (async () => {
   try {
@@ -11,6 +12,7 @@ import { db } from './models/index.js';
       useUnifiedTopology: true,
     });
   } catch (error) {
+    console.log("Error");
     process.exit();
   }
 })();
@@ -22,12 +24,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: 'http://localhost:8080',
+    origin: "http://localhost:8080",
   })
 );
 
-app.get('/', (req, res) => {
-  res.send('API em execucao');
-});
+app.use("/", gradeRouter);
 
 app.listen(process.env.PORT || 8081, () => {});
